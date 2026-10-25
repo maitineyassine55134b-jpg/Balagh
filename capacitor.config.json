@@ -1,0 +1,8 @@
+{
+  "appId": "ma.balagh.app",
+  "appName": "Balagh",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Balagh | Votre quartier, votre voix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Montserrat:wght@400;600;700;800&family=Noto+Sans+Tifinagh:wght@400;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<style>
+/* Couleurs de la charte, une par rôle */
+:root{
+ --bg:#F6F0E6;     /* Meniro · background des écrans et fond principal */
+ --card:#FAFAFA;   /* Albâtre · cartes, disque du logo, fond des cartes */
+ --green:#006837;  /* Vert laurier · titres, barre de navigation (texte blanc) */
+ --red:#C1272D;    /* Rouge pur cramoisi · bouton « Signaler » et urgences (texte blanc) */
+ --ink:#13251C;    /* Vert noir · texte courant */
+ --title:#006837;
+ --muted:#13251C;
+ --line:#E6DDCB;   /* filet discret, dérivé de Meniro */
+ --soft:#F6F0E6;
+ --on-green:#FAFAFA;
+ --maxw:480px;
+}
+/* Mode sombre : même système, « Nuit sur sable » en fond */
+:root[data-theme="dark"]{--bg:#13251C;--ink:#F6F0E6;--card:#1b3126;--title:#4fb884;--muted:#F6F0E6;--line:#2b4a3b;--soft:#1b3126;--green:#00804a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Montserrat,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5;min-height:100vh}
+html[lang=ar] body{font-family:Cairo,system-ui,sans-serif}
+html[lang=zgh] body,html[lang=zgh] button,html[lang=zgh] input,html[lang=zgh] select,html[lang=zgh] textarea{font-family:'Noto Sans Tifinagh',Montserrat,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;vertical-align:middle;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+#top{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:var(--maxw);display:flex;justify-content:space-between;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:var(--bg);border-bottom:1px solid var(--line);z-index:6}
+#top .tr{display:flex;gap:8px;align-items:center}
+#main{max-width:var(--maxw);margin:0 auto;padding:76px 18px 110px}
+h1,h2,.h{color:var(--title);font-weight:800;line-height:1.25}
+h2{font-size:20px;margin-bottom:6px}
+.label{font-weight:600;font-size:13px;color:var(--muted)}
+.muted{color:var(--muted);font-size:14px}
+.sect{margin:20px 0 10px;font-weight:700;font-size:16px;color:var(--title)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.rh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+/* Logo : cliquable, ramène à l'accueil */
+.logo-home{background:none;border:0;cursor:pointer;padding:0;color:inherit;display:flex;align-items:center;gap:10px;text-align:start}
+.logo-home:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:8px}
+.logo-home svg{width:44px;height:44px;flex:none}
+.logo-home b{font-weight:800;color:var(--title);font-size:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand.big{flex-direction:column;justify-content:center;margin-bottom:18px}
+.brand.big svg{width:84px;height:84px}
+.brand.big small{font-weight:600;color:var(--title);font-size:14px}
+select,input,textarea{font-family:inherit;font-size:16px;width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+select{width:auto;padding:7px 8px;margin:0;font-size:14px;font-weight:600}
+.field{display:block;margin-bottom:12px;font-weight:600;font-size:13px;color:var(--muted)}
+.btn{font-weight:800;font-size:17px;border:0;border-radius:14px;padding:15px;width:100%;cursor:pointer;background:var(--red);color:var(--on-green);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.btn.sec{background:transparent;color:var(--green);border:2px solid var(--green)}
+.btn.urg{background:var(--red)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.soc{font-weight:700;font-size:15px;width:100%;padding:13px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;margin-top:10px}
+.soc.apple{background:#000;color:#fff;border-color:#000}
+:root[data-theme="dark"] .soc.apple{background:#F6F0E6;color:#13251C;border-color:#F6F0E6}
+.soc svg{width:20px;height:20px;flex:none}
+.div{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:14px 0 2px}
+.div::before,.div::after{content:"";flex:1;height:1px;background:var(--line)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:12px;padding:4px;gap:4px;margin-bottom:12px}
+.seg button{font-weight:700;font-size:14px;border:0;border-radius:9px;padding:10px;background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.seg button.on{background:var(--green);color:var(--on-green)}
+.seg.three{grid-template-columns:1fr 1fr 1fr}
+.link{background:none;border:0;color:var(--title);font-weight:700;font-size:14px;cursor:pointer;padding:6px 0;display:inline-flex;align-items:center;gap:4px}
+.row2{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:8px}
+.row2 .btn{margin-top:0}
+.err{color:var(--red);font-weight:600;font-size:14px;margin:6px 0}
+.ok{color:var(--green);font-weight:600;font-size:14px;margin:6px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{text-align:start;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px;color:var(--ink);display:flex;flex-direction:column;gap:8px;cursor:pointer;min-height:104px}
+.tile .ic{width:44px;height:44px;border-radius:12px;background:var(--soft);color:var(--green);display:grid;place-items:center}
+.tile b{font-size:14px;font-weight:800;line-height:1.25;color:var(--ink)}
+.tile.on{border-color:var(--green)}
+.emg{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-inline-start:6px solid var(--red);border-radius:14px;padding:12px;margin-bottom:10px;width:100%;text-align:start;cursor:pointer;color:var(--ink)}
+.emg .ic{width:42px;height:42px;border-radius:12px;background:var(--soft);color:var(--red);display:grid;place-items:center;flex:none}
+.emg p{font-weight:700;font-size:14px;flex:1}
+.num{font-weight:800;font-size:20px;color:var(--red);min-width:52px;text-align:center}
+.banner{background:var(--red);color:var(--on-green);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:12px;border:0;width:100%;text-align:start}
+.banner b{font-size:17px;font-weight:800;display:block}
+.banner small{font-size:13px;opacity:.9}
+.map{height:130px;border-radius:14px;background-color:var(--soft);background-image:repeating-linear-gradient(0deg,transparent 0 35px,var(--line) 35px 37px),repeating-linear-gradient(90deg,transparent 0 35px,var(--line) 35px 37px);display:grid;place-items:center;margin-top:10px;text-align:center}
+.coords{font-weight:700;font-size:14px;color:var(--title);direction:ltr;display:inline-block}
+.nudge{display:grid;grid-template-columns:repeat(3,44px);gap:6px;justify-content:center;margin-top:10px}
+.nudge button{height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--green);cursor:pointer;display:grid;place-items:center}
+.photo{display:grid;place-items:center;min-height:200px;border:2px dashed var(--green);border-radius:14px;cursor:pointer;overflow:hidden;background:var(--card);color:var(--title);font-weight:700;text-align:center}
+.photo img{width:100%;max-height:300px;object-fit:cover}
+.prog{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:4px 0 14px}
+.prog i{height:6px;border-radius:3px;background:var(--line)}
+.prog i.on{background:var(--green)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.stats .card{padding:12px 6px;margin:0}
+.stats b{font-size:22px;font-weight:800;color:var(--title);display:block}
+.stats span{font-size:12px;color:var(--muted)}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;white-space:nowrap;background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.pill.s1{color:var(--green)}
+.pill.s2{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.pill.draft{color:var(--red)}
+.track{display:flex;justify-content:space-between;margin:14px 0 6px}
+.st{flex:1;text-align:center;font-size:12px;color:var(--muted)}
+.st i{display:grid;place-items:center;width:30px;height:30px;margin:0 auto 6px;border-radius:50%;background:var(--line);font-style:normal;font-weight:800;color:var(--ink)}
+.st.on{color:var(--ink);font-weight:600}
+.st.on i{background:var(--green);color:var(--on-green)}
+.ok-ico{width:72px;height:72px;border-radius:50%;background:var(--green);color:var(--on-green);display:grid;place-items:center;margin:0 auto 10px}
+.center{text-align:center}
+.num2{font-size:22px;font-weight:800;color:var(--title);margin:6px 0 12px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--green);color:var(--on-green);display:grid;place-items:center;font-weight:800;overflow:hidden;flex:none;border:0;cursor:pointer;font-size:16px}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar.lg{width:104px;height:104px;font-size:34px;margin:0 auto;cursor:default}
+.chips{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}
+.chip{white-space:nowrap;border-radius:999px;padding:8px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:13px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--green);color:var(--on-green);border-color:var(--green)}
+/* Barre de navigation : vert laurier, texte blanc */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:var(--maxw);display:flex;justify-content:space-around;align-items:center;background:var(--green);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));z-index:5;color:var(--on-green)}
+.tab{background:none;border:0;color:var(--on-green);opacity:.8;display:flex;flex-direction:column;align-items:center;cursor:pointer;min-width:58px;font-size:11px;font-weight:600}
+.tab.on{opacity:1}
+.fab{width:60px;height:60px;border-radius:50%;background:var(--red);color:var(--on-green);border:4px solid var(--bg);margin-top:-30px;cursor:pointer;display:grid;place-items:center}
+#toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;transition:.25s;pointer-events:none;max-width:90%;z-index:9;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- RESPONSIVE ---------- */
+#main>div[style]{max-width:460px;margin-left:auto;margin-right:auto}
+@media (max-width:360px){.grid{gap:8px}.tile b{font-size:13px}.stats b{font-size:18px}}
+@media (min-width:640px){
+ #main{max-width:720px}
+ .grid{grid-template-columns:repeat(3,1fr)}
+ #top{max-width:720px}
+ #nav{max-width:720px}
+}
+/* Ordinateur : barre latérale à gauche au lieu de la barre du bas */
+@media (min-width:960px){
+ #top{left:88px;right:0;transform:none;max-width:none;width:auto;padding-inline:32px}
+ #main{max-width:1040px;margin:0 auto 0 88px;padding:96px 32px 48px}
+ #nav{top:0;bottom:0;left:0;right:auto;transform:none;max-width:none;width:88px;flex-direction:column;justify-content:flex-start;gap:18px;padding:96px 8px 16px}
+ .fab{margin-top:0}
+ .tab{min-width:0}
+ .grid{grid-template-columns:repeat(5,1fr)}
+ .tile{min-height:132px}
+ .emg-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ #toast{bottom:32px;left:calc(50% + 44px)}
+}
+@media (min-width:1280px){#main{max-width:1120px}}
+</style>
+</head>
+<body>
+<header id="top"></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+<div id="toast"></div>
+
+<script>
+const LOGO=`<svg viewBox="0 0 370.91 370.91" aria-label="Balagh"><path fill="#c1272d" transform="translate(-114.55 -114.55)" d="M485.45,204V396A89.45,89.45,0,0,1,396,485.45H204A89.45,89.45,0,0,1,114.55,396V204A89.45,89.45,0,0,1,204,114.55H396A89.45,89.45,0,0,1,485.45,204Z"/><path fill="#006837" transform="translate(-114.55 -114.55)" d="M361.28,118.75v362.5c0,1.42,0,2.81-.14,4.2H238.87c-.1-1.39-.15-2.78-.15-4.2V118.75c0-1.42.05-2.81.15-4.2H361.14C361.24,115.94,361.28,117.33,361.28,118.75Z"/><rect fill="#fff" x="69.6" y="69.6" width="231.71" height="231.71" rx="115.85"/><path fill="#006837" transform="translate(-114.55 -114.55)" d="M334.21,299.85C351,295.46,359.9,284.34,359.9,271c0-13.47-8.15-25.84-41.82-25.84H269.54L240.1,354.81h59.66c37.59,0,52.31-14.87,52.31-33.35C352.07,310.18,344.55,302.51,334.21,299.85ZM300.86,327.1h-17.7l4.39-16.29h15.81c7.83,0,11.75,2.19,11.75,6.89C315.11,323.18,309.78,327.1,300.86,327.1Zm9.71-38.84H293.65l4.08-15.35h15.19c7.83,0,11.27,1.88,11.27,6.42C324.19,284,320,288.26,310.57,288.26Z"/></svg>`;
+const ic=(n,s)=>`<span class="ms"${s?` style="font-size:${s}px"`:''}>${n}</span>`;
+const APPLE_SVG=`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.03-2.87 2.34-4.25 2.45-4.32-1.33-1.95-3.41-2.21-4.15-2.24-1.77-.18-3.45 1.04-4.35 1.04-.9 0-2.28-1.02-3.75-.99-1.93.03-3.71 1.12-4.7 2.85-2 3.48-.51 8.63 1.44 11.46.96 1.38 2.1 2.93 3.6 2.88 1.44-.06 1.99-.93 3.74-.93 1.74 0 2.23.93 3.75.9 1.55-.03 2.53-1.4 3.48-2.79 1.1-1.6 1.55-3.15 1.57-3.23-.04-.02-3.02-1.16-3.06-4.6zM13.5 3.94c.8-.96 1.33-2.3 1.19-3.64-1.15.05-2.54.77-3.36 1.73-.74.85-1.39 2.22-1.21 3.53 1.28.1 2.59-.65 3.38-1.62z"/></svg>`;
+const GOOGLE_SVG=`<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.5l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.3l7.9 6.1C12.4 13.5 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>`;
+
+const CATS=[
+ {id:'voirie',i:'add_road',fr:'Voirie',en:'Roads',ar:'الطرق',zgh:'ⵜⵉⵎⵉⵙⵡⴰⵔⵉⵏ'},
+ {id:'assainissement',i:'plumbing',fr:'Assainissement',en:'Sewage',ar:'الصرف الصحي',zgh:'ⵜⴰⵙⵓⵔⵜ ⵏ ⵡⴰⵎ'},
+ {id:'eclairage',i:'lightbulb',fr:'Éclairage',en:'Street lighting',ar:'الإنارة العمومية',zgh:'ⵜⴰⵙⵙⵓⵍⵜ ⵏ ⵓⵙⵙⴰⵏ'},
+ {id:'dechets',i:'delete',fr:'Déchets',en:'Waste',ar:'النفايات',zgh:'ⵉⵖⵣⴰⵏ'},
+ {id:'espaces',i:'park',fr:'Espaces verts',en:'Green spaces',ar:'المساحات الخضراء',zgh:'ⵉⴳⵔⴰⵡⵏ ⵉⵣⵍⴰⵏ'},
+ {id:'animaux',i:'pets',fr:'Animaux',en:'Animals',ar:'الحيوانات',zgh:'ⵉⵎⴰⵏⵉⵏ'},
+ {id:'nuisances',i:'volume_up',fr:'Nuisances',en:'Nuisance',ar:'الإزعاج',zgh:'ⵜⴰⵏⵉⵏⵉⵏ ⵜⴰⵙⴰⵏⴷⵓⵜ'},
+ {id:'batiments',i:'domain',fr:'Bâtiments',en:'Buildings',ar:'المباني',zgh:'ⵉⵖⵔⵎⵏ'},
+ {id:'transport',i:'directions_bus',fr:'Transport',en:'Transport',ar:'النقل',zgh:'ⵜⴰⵎⴰⵢⵓⵜ ⵏ ⵜⵔⴰⵏⵙⴱⵓⵔ'},
+ {id:'access',i:'accessible',fr:'Accessibilité',en:'Accessibility',ar:'إمكانية الوصول',zgh:'ⵜⴰⵔⵓⵙⵜ ⵏ ⵓⵙⵓⴳⴳⵓⵙ'}
+];
+
+const EMG=[
+ {i:'local_fire_department',n:'15',fr:'Incendie, fumée, explosion, fuite de gaz',en:'Fire, smoke, explosion, gas leak',ar:'حريق / تسرب غاز',zgh:'ⴰⴳⵔⴰⵙ ⵏ ⵜⴰⵍⵍⴰ, ⵓⴳⵔⴰⵙ, ⵜⴰⵙⴰⵏⴱⵓⵍⵜ, ⴰⵙⵓⵔⵏ ⵏ ⵜⴰⵏⵜⵓⵔⵜ'},
+ {i:'cardiology',n:'15',fr:'Personne inconsciente, arrêt cardiaque, malaise grave',en:'Unconscious person, cardiac arrest',ar:'فقدان الوعي',zgh:'ⴰⵎⵓⵔ ⵓⵔ ⵉⵙⵙⵏⴰⵢ, ⵜⴰⵡⵙⴰ ⵏ ⵓⵡⴰⵍ'},
+ {i:'pregnant_woman',n:'15',fr:'Femme enceinte : contractions, saignement, accouchement',en:'Pregnant woman: contractions, bleeding, labour',ar:'امرأة حامل تحتاج إسعافاً',zgh:'ⵜⴰⵎⵔⴰⵡⵜ ⵜⴰⵏⴰⴼⵏⴰ ⵜⴰⵡⴰⵍⵍⵉⵜ, ⵜⴰⵖⵔⴰ, ⵜⴰⵡⵙⵓⵍⵜ'},
+ {i:'car_crash',n:'15',fr:'Accident de la route avec blessés (puis 19 ou 177)',en:'Road accident with injured (then 19 or 177)',ar:'حادث سير',zgh:'ⴰⴳⵔⴰⵙ ⵏ ⵜⵉⵎⵉⵙⵡⴰⵔⵉⵏ ⴷ ⵉⵎⵓⵔⵉⵏ (ⴷ 19 ⵏⵖ 177)'},
+ {i:'pool',n:'15',fr:'Noyade, électrocution, intoxication',en:'Drowning, electrocution, poisoning',ar:'غرق / صعق كهربائي / تسمم',zgh:'ⴰⵙⵙⵓⴼⵓⵔ, ⵜⵉⵎⴳⵓⵔⴰⵙⵉⵏ, ⵜⴰⴱⵙⵙⴰⵏⵜ'},
+ {i:'pets',n:'15',fr:'Morsure d’un animal enragé ou agressif',en:'Bite from a rabid or aggressive animal',ar:'حيوان مسعور أو هائج',zgh:'ⴰⵙⴼⵔⵓ ⵏ ⵓⵎⴰⵏ ⵉⵎⵥⵥⵉⵏ'},
+ {i:'shield',n:'19',fr:'Agression, vol, personne armée (177 hors agglomération)',en:'Assault, robbery, armed person (177 outside cities)',ar:'اعتداء / سرقة',zgh:'ⴰⴼⴰⵔⴰⵙ, ⴰⵙⴼⴰⵔ, ⵓⵎⵓⵔ ⵉⵙⵍⵍⵏ ⵜⵉⵙⵉⵏ (177 ⵖⴼ ⵜⵎⴷⵉⵏⵉⵏ)'},
+ {i:'child_care',n:'19',fr:'Enfant perdu ou disparu (ou 177)',en:'Missing or lost child (or 177)',ar:'طفل مفقود',zgh:'ⴰⵎⵓⵔ ⵉⵎⵓⵔ ⵉⵍⵍⵏ ⵓⵔ ⵉⵙⵙⵏ (ⵏⵖ 177)'},
+ {i:'domain_disabled',n:'15',fr:'Effondrement de bâtiment, inondation, glissement de terrain',en:'Building collapse, flood, landslide',ar:'انهيار / فيضان',zgh:'ⴰⵙⵙⴰⵡⵍ ⵏ ⵉⵖⵔⵎⵏ, ⴰⵎⴰⵙⵙⵓⵏⵓ, ⴰⵙⵙⵓⴼⴰⵍⵓ ⵏ ⵜⵎⵓⵖⵉⵜ'},
+ {i:'electrical_services',n:'15',fr:'Câble électrique tombé au sol',en:'Power line down on the ground',ar:'سلك كهربائي ساقط',zgh:'ⴰⵙⵍⴰ ⵏ ⵜⵉⵎⵉⵎⵓⵔⵜ ⵜⵥⵥⵓⵍ ⴷ ⵓⴼⴰⵔⴰ'}
+];
+
+const STATUS={
+ fr:['Reçu','En cours','Résolu'],en:['Received','In progress','Resolved'],ar:['تم الاستلام','قيد المعالجة','تم الحل'],
+ zgh:['ⵉⵜⵜⵓⵙⵔⴰⵔ','ⴷⴰ ⵉⵜⵜⵓⵙⵙⵓⵏ','ⵉⵜⵜⵓⵙⴽⵓⵔ']
+};
+const LANGNAME={fr:'Français',en:'English',ar:'العربية',zgh:'ⵜⴰⵎⴰⵣⵉⵖⵜ'};
+const BASE={lat:33.9716,lng:-6.8498};
+
+const DICT={
+fr:{slogan:'Votre quartier, votre voix',login:'Connexion',signup:'Inscription',logout:'Déconnexion',email:'E-mail',phone:'Téléphone',password:'Mot de passe',name:'Nom complet',confirm:'Confirmer le mot de passe',forgot:'Mot de passe oublié ?',forgotTitle:'Mot de passe oublié',forgotText:'Saisissez votre e-mail ou votre téléphone. Nous vous enverrons un lien de réinitialisation.',send:'Envoyer le lien',submit:'Se connecter',create:'Créer mon compte',noAcc:'Pas encore de compte ?',haveAcc:'Déjà un compte ?',or:'ou',google:'Continuer avec Google',apple:'Continuer avec Apple',back:'Retour',next:'Continuer',home:'Accueil',track:'Suivi',quarter:'Quartier',report:'Signaler',greet:'Bonjour',emgBanner:'Urgence vitale',emgSub:'Appeler directement le secours',urgTitle:'Urgences',urgText:'Appuyez pour appeler. Votre position est envoyée.',call:'Appeler',cats:'Problèmes urbains',all:'Tous',pickCat:'Quel est le problème ?',loc:'Localisation',gps:'Utiliser ma position GPS',maps:'Voir sur Google Maps',nudge:'Ajuster le repère',photo:'Photo du problème',photoTip:'Ouvrir l’appareil photo',desc:'Description (facultatif)',review:'Vérifier',reportNow:'Signaler',sent:'Signalement envoyé',draftSaved:'Brouillon enregistré',draftText:'Envoi automatique au retour du réseau.',sentText:'Merci ! Votre voix compte pour votre quartier.',trackNo:'Numéro de suivi',followUp:'Suivre mon signalement',homeBtn:'Retour à l’accueil',empty:'Aucun signalement pour l’instant.',errEmail:'E-mail invalide.',errPhone:'Numéro invalide (ex. 06 12 34 56 78).',errPw:'Mot de passe : 6 caractères minimum.',errMatch:'Les mots de passe ne correspondent pas.',errFill:'Veuillez remplir tous les champs.',resetOk:'Si ce compte existe, un lien a été envoyé.',simulate:'Simuler une mise à jour',cancel:'Annuler',step:'Étape',reportTitle:'Signaler un problème',quarterTitle:'Quartier',quarterText:'Incidents signalés autour de vous.',trackTitle:'Suivi',trackText:'Suivez l’avancement de vos signalements.',gpsErr:'Position indisponible. Ajustez le repère.',gpsOk:'Position GPS validée',sentToast:'Position envoyée au',pending:'En attente de réseau',callNote:'19 : police (ville) · 177 : gendarmerie (hors agglomération)',profile:'Profil',editProfile:'Modifier le profil',changePhoto:'Changer la photo',bio:'Bio',bioPh:'Parlez de vous en quelques mots',save:'Enregistrer',cancelBtn:'Annuler',saved:'Modifications enregistrées',theme:'Thème',themeLight:'Clair',themeDark:'Sombre',themeAuto:'Automatique',langLabel:'Langue',precision:'Précision',gpsSearch:'Recherche de votre position GPS…',gpsRefresh:'Actualiser la position',gpsRetry:'Réessayer le GPS',gpsDenied:'Accès à la localisation refusé. Autorisez-le dans les réglages du navigateur, puis réessayez.',gpsTimeout:'Position trop lente à obtenir. Essayez en extérieur, puis réessayez.',gpsUnavail:'Position indisponible. Vérifiez que le GPS est activé.',gpsUnsupported:'Ce navigateur ne permet pas la géolocalisation.',gpsNeedFix:'Votre position GPS est requise pour continuer.'},
+en:{slogan:'Your neighbourhood, your voice',login:'Log in',signup:'Sign up',logout:'Log out',email:'Email',phone:'Phone',password:'Password',name:'Full name',confirm:'Confirm password',forgot:'Forgot password?',forgotTitle:'Forgot password',forgotText:'Enter your email or phone. We will send you a reset link.',send:'Send link',submit:'Log in',create:'Create my account',noAcc:'No account yet?',haveAcc:'Already have an account?',or:'or',google:'Continue with Google',apple:'Continue with Apple',back:'Back',next:'Continue',home:'Home',track:'Tracking',quarter:'Area',report:'Report',greet:'Hello',emgBanner:'Life-threatening emergency',emgSub:'Call emergency services now',urgTitle:'Emergencies',urgText:'Tap to call. Your location is sent.',call:'Call',cats:'Urban issues',all:'All',pickCat:'What is the problem?',loc:'Location',gps:'Use my GPS location',maps:'View on Google Maps',nudge:'Adjust the pin',photo:'Photo of the problem',photoTip:'Open the camera',desc:'Description (optional)',review:'Review',reportNow:'Report',sent:'Report sent',draftSaved:'Draft saved',draftText:'Will be sent automatically when you are back online.',sentText:'Thank you! Your voice counts for your neighbourhood.',trackNo:'Tracking number',followUp:'Track my report',homeBtn:'Back to home',empty:'No reports yet.',errEmail:'Invalid email.',errPhone:'Invalid number (e.g. 06 12 34 56 78).',errPw:'Password: 6 characters minimum.',errMatch:'Passwords do not match.',errFill:'Please fill in all fields.',resetOk:'If this account exists, a link has been sent.',simulate:'Simulate an update',cancel:'Cancel',step:'Step',reportTitle:'Report a problem',quarterTitle:'Area',quarterText:'Incidents reported around you.',trackTitle:'Tracking',trackText:'Follow the progress of your reports.',gpsErr:'Location unavailable. Adjust the pin.',gpsOk:'GPS location confirmed',sentToast:'Location sent to',pending:'Waiting for network',callNote:'19: police (cities) · 177: gendarmerie (outside cities)',profile:'Profile',editProfile:'Edit profile',changePhoto:'Change photo',bio:'Bio',bioPh:'Tell us about yourself in a few words',save:'Save',cancelBtn:'Cancel',saved:'Changes saved',theme:'Theme',themeLight:'Light',themeDark:'Dark',themeAuto:'Automatic',langLabel:'Language',precision:'Accuracy',gpsSearch:'Finding your GPS position…',gpsRefresh:'Refresh position',gpsRetry:'Retry GPS',gpsDenied:'Location access denied. Allow it in your browser settings, then retry.',gpsTimeout:'Position took too long. Try outdoors, then retry.',gpsUnavail:'Position unavailable. Check that GPS is on.',gpsUnsupported:'This browser does not support geolocation.',gpsNeedFix:'Your GPS position is required to continue.'},
+ar:{slogan:'حيّك، صوتك',login:'تسجيل الدخول',signup:'إنشاء حساب',logout:'تسجيل الخروج',email:'البريد الإلكتروني',phone:'الهاتف',password:'كلمة المرور',name:'الاسم الكامل',confirm:'تأكيد كلمة المرور',forgot:'نسيت كلمة المرور؟',forgotTitle:'نسيت كلمة المرور',forgotText:'أدخل بريدك الإلكتروني أو هاتفك وسنرسل لك رابط إعادة التعيين.',send:'إرسال الرابط',submit:'تسجيل الدخول',create:'إنشاء حسابي',noAcc:'ليس لديك حساب؟',haveAcc:'لديك حساب بالفعل؟',or:'أو',google:'المتابعة مع Google',apple:'المتابعة مع Apple',back:'رجوع',next:'متابعة',home:'الرئيسية',track:'المتابعة',quarter:'الحي',report:'تبليغ',greet:'مرحبا',emgBanner:'حالة طوارئ',emgSub:'اتصل بالإسعاف مباشرة',urgTitle:'الطوارئ',urgText:'اضغط للاتصال. سيتم إرسال موقعك.',call:'اتصال',cats:'مشاكل حضرية',all:'الكل',pickCat:'ما هي المشكلة؟',loc:'الموقع',gps:'استخدام موقعي GPS',maps:'عرض على خرائط Google',nudge:'ضبط المؤشر',photo:'صورة المشكلة',photoTip:'فتح الكاميرا',desc:'وصف (اختياري)',review:'مراجعة',reportNow:'تبليغ',sent:'تم إرسال التبليغ',draftSaved:'تم حفظ المسودة',draftText:'سيتم الإرسال تلقائياً عند عودة الاتصال.',sentText:'شكراً! صوتك يهم حيّك.',trackNo:'رقم المتابعة',followUp:'تتبع تبليغي',homeBtn:'العودة إلى الرئيسية',empty:'لا توجد تبليغات بعد.',errEmail:'بريد إلكتروني غير صالح.',errPhone:'رقم غير صالح (مثال: 06 12 34 56 78).',errPw:'كلمة المرور: 6 أحرف على الأقل.',errMatch:'كلمتا المرور غير متطابقتين.',errFill:'يرجى ملء جميع الحقول.',resetOk:'إذا كان الحساب موجوداً، تم إرسال رابط.',simulate:'محاكاة تحديث',cancel:'إلغاء',step:'الخطوة',reportTitle:'تبليغ عن مشكلة',quarterTitle:'الحي',quarterText:'بلاغات حولك.',trackTitle:'المتابعة',trackText:'تابع تقدم تبليغاتك.',gpsErr:'الموقع غير متوفر. اضبط المؤشر.',gpsOk:'تم تأكيد موقع GPS',sentToast:'تم إرسال الموقع إلى',pending:'في انتظار الشبكة',callNote:'19: الشرطة (المدن) · 177: الدرك الملكي (خارج المدن)',profile:'الملف الشخصي',editProfile:'تعديل الملف',changePhoto:'تغيير الصورة',bio:'نبذة',bioPh:'تحدث عن نفسك في كلمات قليلة',save:'حفظ',cancelBtn:'إلغاء',saved:'تم حفظ التعديلات',theme:'المظهر',themeLight:'فاتح',themeDark:'داكن',themeAuto:'تلقائي',langLabel:'اللغة',precision:'الدقة',gpsSearch:'جارٍ تحديد موقعك عبر GPS…',gpsRefresh:'تحديث الموقع',gpsRetry:'إعادة المحاولة',gpsDenied:'تم رفض الوصول إلى الموقع. فعّله في إعدادات المتصفح ثم أعد المحاولة.',gpsTimeout:'تأخر الحصول على الموقع. جرّب في مكان مفتوح ثم أعد المحاولة.',gpsUnavail:'الموقع غير متاح. تأكد من تفعيل GPS.',gpsUnsupported:'المتصفح لا يدعم تحديد الموقع.',gpsNeedFix:'يلزم موقعك عبر GPS للمتابعة.'},
+zgh:{slogan:'ⵜⴰⴷⴷⴰⵔⵜ ⵏⵏⴽ, ⴰⵡⴰⵍ ⵏⵏⴽ',login:'ⴰⴽⵛⵎ',signup:'ⴰⵙⵏⴼⵍ ⴰⴽⴰⵡⵏⵜ',logout:'ⴰⴼⵖ',email:'ⵉⵎⴰⵢⵍ',phone:'ⵜⵉⵍⵉⴼⵓⵏ',password:'ⴰⵎⵙⵙⵓⵍ ⵏ ⵓⵏⴼⴰⵍ',name:'ⵉⵙⵎ ⵏⵏⴽ ⴰⵎⴰⵟⵟⴰⵢ',confirm:'ⵙⵙⵓⵏⴼⵍ ⴰⵎⵙⵙⵓⵍ',forgot:'ⵜⵜⵓⵏⵉⵏ ⴰⵎⵙⵙⵓⵍ ?',forgotTitle:'ⵜⵜⵓⵏⵉⵏ ⴰⵎⵙⵙⵓⵍ',forgotText:'ⵙⵙⴽⵛⵎ ⵉⵎⴰⵢⵍ ⵏⵖ ⵜⵉⵍⵉⴼⵓⵏ ⵏⵏⴽ. ⵖⴰ ⵏⵚⵚⵓⵔ ⴰⵏⵥⴰⵔ ⵏ ⵓⵙⵙⵓⵏ.',send:'ⵚⵚⵓⵔ ⴰⵏⵥⴰⵔ',submit:'ⴰⴽⵛⵎ',create:'ⴰⵙⵏⴼⵍ ⴰⴽⴰⵡⵏⵜ ⵏⵏⵉ',noAcc:'ⵓⵔ ⵜⵍⵍⵉ ⴰⴽⴰⵡⵏⵜ ?',haveAcc:'ⵜⵍⵍⵉ ⴰⴽⴰⵡⵏⵜ ?',or:'ⵏⵏⴰⵢ',google:'ⴰⴽⵛⵎ ⵙ Google',apple:'ⴰⴽⵛⵎ ⵙ Apple',back:'ⴰⵔⵓⵥ',next:'ⴰⴽⴽⵓⵎ',home:'ⵜⴰⴷⴷⴰⵔⵜ',track:'ⴰⵎⵙⵉⵍⵍⵉ',quarter:'ⵜⴰⵎⵏⴰⵢⵜ',report:'ⴰⵙⵖⵔⵓ',greet:'ⴰⵣⵓⵍ',emgBanner:'ⴰⴼⴰⵔⴰⵙ ⵏ ⵜⵓⵖⵔⵓⵜ',emgSub:'ⵙⵙⵓⵏⵓ ⵙ ⵉⵙⵓⵔⵏ ⵜⴰⵏⴷⵉⵔⵜ',urgTitle:'ⵜⵉⵖⵓⵔⴰⵙⵜ',urgText:'ⴰⵟⵟⴰⵙ ⴰⴼⴰⵔ ⵏ ⵓⴼⵓⵙ. ⵏⵙⵉⵖ ⴰⵏⵥⴰⵔ ⵏⵏⴽ.',call:'ⵙⵙⵓⵏⵓ',cats:'ⵉⵖⵓⵔⴰⵏ ⵏ ⵜⵎⴷⵉⵏⵉⵏ',all:'ⴳⴳⵓⵔ',pickCat:'ⵎⴰⵏⵉ ⴰⵖⵓⵔⴰⵙ ?',loc:'ⴰⵏⴰⵡ',gps:'ⵙⵙⵓⵏⴼⴰ ⵙ GPS',maps:'ⵥⵥⵓⵔ ⴳ Google Maps',nudge:'ⵙⵙⵓⵔⵓⵔ ⴰⵣⵔⴰⵢ',photo:'ⵜⵓⵡⵉⵔⵉⵏ ⵏ ⵓⵖⵓⵔⴰⵙ',photoTip:'ⵔⵥⵓ ⴰⴽⴰⵎⵔⴰ',desc:'ⴰⵖⵓⵔⴰⵙ (ⴰⵔⴰⵔ)',review:'ⵥⵥⵓⵔ',reportNow:'ⴰⵙⵖⵔⵓ',sent:'ⵉⵜⵜⵓⵙⵙⵓⵏ ⵉⵖⵓⵔⴰⵙ',draftSaved:'ⵜⵓⵙⴷⴰ ⵜⵜⵓⵙⵙⵏ',draftText:'ⵉⵜⵜⵓⵙⵙⵓⵏ ⵙ ⵓⴷⵙ ⴷ ⵓⵎⵙⵙⵓⵏ ⵏ ⵓⵙⵓⵔⵏ.',sentText:'ⴰⵏⵙⴰⵏ! ⵜⵡⵉⵔⴰ ⵏⵏⴽ ⵜⵓⵏⵙ ⴳ ⵜⴷⴰⵔⵜ ⵏⵏⴽ.',trackNo:'ⴰⵟⵟⴰⵙ ⵏ ⵓⵙⵎⵉⵍⵍⵉ',followUp:'ⵓⵙⴳⴳⵓⵔ ⵉⵖⵓⵔⴰⵙ ⵉⵏⵓ',homeBtn:'ⵓⵔⵥ ⵖⵔ ⵜⴰⴷⴷⴰⵔⵜ',empty:'ⵓⵔ ⵉⵍⵍⵉ ⵜⵉⵖⵓⵔⴰⵙⵉⵏ.',errEmail:'ⵉⵎⴰⵢⵍ ⵓⵔ ⵉⵙⵙⵏⴼⵍ.',errPhone:'ⵓⵎⵙⵙⵓⵍ ⵓⵔ ⵉⵙⵙⵏⴼⵍ (ⵉⵙⵙⵏ 06 12 34 56 78).',errPw:'ⴰⵎⵙⵙⵓⵍ ⵏ ⵓⵏⴼⴰⵍ: 6 ⵉⵙⵙⵓⵏ ⴰⵎⵓⵔ.',errMatch:'ⵉⵎⵙⵙⵓⵍⵏ ⵓⵔ ⵉⵎⴰⵟⵟⴰⵢⵏ.',errFill:'ⵥⵥⵓⵔ ⴰⵎⴽ ⵉⵙⴳⴳⴰ ⵉⵎⵔⵓⵔⵏ.',resetOk:'ⵉⴼ ⵓⵙⵙⵏ ⴰⴽⴰⵡⵏⵜ, ⵉⵜⵜⵓⵙⵙⵓⵏ ⵓⵙⵓⵔⵏ.',simulate:'ⵓⵙⴽⵔ ⵓⵙⵎⴷⵉⵔ',cancel:'ⴰⵙⵓⴼⴼⵉ',step:'ⴰⵙⵙⵓⵍ',reportTitle:'ⴰⵙⵖⵔⵓ ⵖⴼ ⵓⵖⵓⵔⴰⵙ',quarterTitle:'ⵜⵎⴷⵉⵏⵜ',quarterText:'ⵉⵖⵓⵔⴰⵙⵏ ⵉⵍⵍⵏ ⵖⵔ ⵓⵙⵙⵓⵔ ⵏⵏⴽ.',trackTitle:'ⴰⵎⵙⵉⵍⵍⵉ',trackText:'ⴰⵙⴳⴳⵓⵔ ⵉⵙⵙⴰⵔⴰⵏ ⵏ ⵉⵖⵓⵔⴰⵙⵏ ⵏⵏⴽ.',gpsErr:'ⴰⵏⴰⵡ ⵓⵔ ⵉⵍⵍⵉ. ⵙⵙⵓⵔⵓⵔ ⴰⵣⵔⴰⵢ.',gpsOk:'ⵜⵓⵙⴷⴰ ⵏ GPS ⵜⵍⴰ',sentToast:'ⵉⵜⵜⵓⵙⵙⵓⵏ ⴰⵏⴰⵡ ⵖⵔ',pending:'ⴷⴰ ⵉⵜⵜⵓⵙⵙⵓⵏ ⵓⵙⵓⵔⵏ',callNote:'19: ⵜⵉⵙⵓⵔⵏⴰ ⴷ ⵜⵎⴷⵉⵏⵉⵏ · 177: ⴰⴷⵔⴰⵔ ⵏ ⵜⵔⴰⵏⵏⵉ',profile:'ⴰⵎⴰⵟⵟⴰⵢ ⵏ ⵓⵎⵙⵓⵏ',editProfile:'ⵙⵙⵓⵔⵓⵔ ⴰⵎⴰⵟⵟⴰⵢ',changePhoto:'ⴰⵙⵙⴱⴷⵍ ⵜⵓⵡⵉⵔⵉⵏ',bio:'ⵜⵓⵙⵙⵉ',bioPh:'ⵙⴼⵓⵙⵙⵙ ⴰⵙⵙⵏⵓ ⴳ ⵓⴳⴰⴷ ⵉⵎⵔⵓⵔⵏ',save:'ⴰⴽⵙⵓⵔ',cancelBtn:'ⴰⵙⵓⴼⴼⵉ',saved:'ⵉⵙⵙⴱⴷⴰⵍⵏ ⵉⵙⴽⴰⵏ',theme:'ⵓⵙⴰⵢⴷⴰ',themeLight:'ⴰⵎⵙⴰⵡⴰⵔ',themeDark:'ⴰⴼⴰⵍⵓ',themeAuto:'ⴰⵙⵙⵡⵉⵍⵍ',langLabel:'ⵜⵓⵜⵍⴰⵢⵜ'}
+};
+const NEARBY=[
+ {c:'voirie',n:{fr:'Nid-de-poule au milieu de la chaussée',en:'Pothole in the middle of the road',ar:'حفرة في وسط الطريق',zgh:'ⵜⴰⵙⴰⵔⵜ ⴳ ⵓⵎⵙⵓⵔⵜ ⵏ ⵜⵉⵎⵉⵙⵡⴰⵔⵉⵏ'},s:0,d:'120 m'},
+ {c:'dechets',n:{fr:'Sacs déposés en bordure de trottoir',en:'Bags left on the pavement',ar:'أكياس مرمية على الرصيف',zgh:'ⵉⵎⵔⵓⵙⵏ ⵉⵍⵍⵏ ⴳ ⵓⵎⵙⵓⵔⵜ ⵏ ⵜⵔⴰⵔⵓⵔⵜ'},s:1,d:'250 m'},
+ {c:'eclairage',n:{fr:'Lampadaire éteint depuis une semaine',en:'Street lamp off for a week',ar:'عمود إنارة معطل منذ أسبوع',zgh:'ⴰⵙⵍⵍⴰ ⵏ ⵓⵙⵙⴰⵏ ⵉⵎⵜⵜⵓ ⵙ ⵡⴰⵙⵙⵓ'},s:2,d:'400 m'},
+ {c:'assainissement',n:{fr:'Plaque d’égout fissurée',en:'Cracked manhole cover',ar:'غطاء صرف متشقق',zgh:'ⴰⵙⵙⵓⵍⴰ ⵏ ⵜⵓⵔⵜ ⵏ ⵡⴰⵎ ⵜⵙⵙⴰⴱⵜ'},s:1,d:'520 m'}
+];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const t=k=>(DICT[S.lang]&&DICT[S.lang][k])||DICT.fr[k]||k;
+const lab=o=>o[S.lang]||o.fr;
+const cn=c=>{const x=CATS.find(y=>y.id===c);return x?lab(x):''};
+const blank=()=>({cat:null,photo:null,lat:null,lng:null,acc:null,geo:'idle',geoErr:'',note:''});
+const AUTH=['login','signup','forgot'];
+
+let S={lang:'fr',theme:'light',user:null,screen:'login',prev:'home',am:'email',step:0,d:blank(),filter:'tous',last:null,err:'',msg:'',pd:null,pdTheme:'light'};
+let reports=[
+ {id:'BLG-48213',c:'assainissement',note:'Regard d’assainissement cassé sur le côté',lat:BASE.lat,lng:BASE.lng,date:'2026-10-18',s:1,draft:false},
+ {id:'BLG-51907',c:'eclairage',note:'Lampadaire éteint depuis une semaine',lat:BASE.lat+0.001,lng:BASE.lng-0.0008,date:'2026-10-22',s:0,draft:false}
+];
+
+function save(){try{localStorage.setItem('balagh_settings',JSON.stringify({lang:S.lang,theme:S.theme,user:S.user}))}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem('balagh_settings'));if(x){S.lang=x.lang||'fr';S.theme=x.theme||'light';S.user=x.user||null}}catch(e){}}
+function applyTheme(th){
+  const r=th||S.theme;
+  const dark=r==='dark'||(r==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.theme=dark?'dark':'light';
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.theme==='auto')applyTheme()});
+
+function setLang(l){
+  S.lang=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=(l==='ar')?'rtl':'ltr';
+  save();render();
+}
+function go(s){S.screen=s;S.err='';S.msg='';render();window.scrollTo(0,0)}
+// Logo : retour à l'accueil (ou à la connexion si non connecté)
+function goHome(){go(S.user?'home':'login')}
+function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2800)}
+function nudge(dx,dy){if(S.d.lat==null)return;S.d.lat+=dy*0.00015;S.d.lng+=dx*0.00015;S.d.acc=null;render()}
+const pillOf=r=>r.draft?`<span class="pill draft">${t('pending')}</span>`:`<span class="pill s${r.s}">${STATUS[S.lang][r.s]}</span>`;
+const trackOf=s=>`<div class="track">${STATUS[S.lang].map((n,i)=>`<div class="st ${i<=s?'on':''}"><i>${i<s?'✓':i+1}</i>${n}</div>`).join('')}</div>`;
+const langSel=()=>`<select aria-label="${t('langLabel')}" onchange="setLang(this.value)">${Object.keys(LANGNAME).map(l=>`<option value="${l}" ${S.lang===l?'selected':''}>${LANGNAME[l]}</option>`).join('')}</select>`;
+const initials=u=>((u?.name||u?.email||u?.phone||'B').trim()[0]||'B').toUpperCase();
+const avatar=u=>u?.photo?`<img src="${u.photo}" alt="">`:`<span>${esc(initials(u))}</span>`;
+
+function render(){
+  applyTheme();
+  const authed=!!S.user;
+  const views={login,signup,forgot,home,urgent,report:reportWiz,track:trackV,quarter:quarterV,profile:profileV};
+  let s=S.screen;
+  if(!authed&&!AUTH.includes(s))s='login';
+  $('#main').innerHTML=views[s]();
+  $('#top').innerHTML=`<button class="logo-home" aria-label="Balagh" onclick="goHome()">${LOGO}<b>Balagh</b></button>
+    <div class="tr">${langSel()}${authed?`<button class="avatar" aria-label="${t('profile')}" onclick="toggleProfile()">${avatar(S.user)}</button>`:''}</div>`;
+  const nav=$('#nav');
+  nav.style.display=(authed&&s!=='report')?'flex':'none';
+  nav.innerHTML=`
+   <button class="tab ${s==='home'?'on':''}" onclick="go('home')">${ic('home')}<span>${t('home')}</span></button>
+   <button class="tab ${s==='urgent'?'on':''}" onclick="go('urgent')">${ic('emergency')}<span>${t('urgTitle')}</span></button>
+   <button class="fab" onclick="startReport()" aria-label="${t('report')}">${ic('add','30')}</button>
+   <button class="tab ${s==='track'?'on':''}" onclick="go('track')">${ic('assignment')}<span>${t('track')}</span></button>
+   <button class="tab ${s==='quarter'?'on':''}" onclick="go('quarter')">${ic('location_on')}<span>${t('quarter')}</span></button>`;
+}
+
+// ---------- CONNEXION / INSCRIPTION ----------
+const brandBig=()=>`<div class="brand big">${LOGO}<b style="font-size:26px;color:var(--title)">Balagh</b><small>${t('slogan')}</small></div>`;
+const socials=()=>`<div class="div">${t('or')}</div>
+ <button class="soc" onclick="social('google')">${GOOGLE_SVG}${t('google')}</button>
+ <button class="soc apple" onclick="social('apple')">${APPLE_SVG}${t('apple')}</button>`;
+const idField=()=>S.am==='email'
+  ?`<label class="field">${t('email')}<input id="id" type="email" autocomplete="email"></label>`
+  :`<label class="field">${t('phone')}<input id="id" type="tel" autocomplete="tel" placeholder="06 12 34 56 78"></label>`;
+const segTabs=()=>`<div class="seg"><button class="${S.am==='email'?'on':''}" onclick="S.am='email';render()">${ic('mail','18')} ${t('email')}</button><button class="${S.am==='phone'?'on':''}" onclick="S.am='phone';render()">${ic('phone','18')} ${t('phone')}</button></div>`;
+
+function login(){return `<div style="margin-top:20px">${brandBig()}
+ <div class="card">${segTabs()}${idField()}
+  <label class="field">${t('password')}<input id="pw" type="password" autocomplete="current-password"></label>
+  ${S.err?`<p class="err">${S.err}</p>`:''}
+  <button class="btn" onclick="doLogin()">${ic('login')} ${t('submit')}</button>
+  <div class="center"><button class="link" onclick="go('forgot')">${t('forgot')}</button></div>
+  ${socials()}
+ </div>
+ <p class="center muted">${t('noAcc')} <button class="link" onclick="go('signup')">${t('signup')}</button></p></div>`}
+
+function signup(){return `<div style="margin-top:20px">${brandBig()}
+ <div class="card">
+  <label class="field">${t('name')}<input id="nm"></label>
+  ${segTabs()}${idField()}
+  <label class="field">${t('password')}<input id="pw" type="password"></label>
+  <label class="field">${t('confirm')}<input id="pw2" type="password"></label>
+  ${S.err?`<p class="err">${S.err}</p>`:''}
+  <button class="btn" onclick="doSignup()">${ic('person_add')} ${t('create')}</button>
+  ${socials()}
+ </div>
+ <p class="center muted">${t('haveAcc')} <button class="link" onclick="go('login')">${t('login')}</button></p></div>`}
+
+function forgot(){return `<div style="margin-top:20px">${brandBig()}
+ <div class="card"><h2>${t('forgotTitle')}</h2><p class="muted" style="margin-bottom:12px">${t('forgotText')}</p>
+  ${segTabs()}${idField()}
+  ${S.err?`<p class="err">${S.err}</p>`:''}${S.msg?`<p class="ok">${S.msg}</p>`:''}
+  <button class="btn" onclick="doForgot()">${ic('mail')} ${t('send')}</button></div>
+ <p class="center"><button class="link" onclick="go('login')">${t('back')}</button></p></div>`}
+
+const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+const validPhone=p=>/^(\+212|0)[5-7]\d{8}$/.test(p.replace(/[\s.-]/g,''));
+const validId=v=>S.am==='email'?validEmail(v):validPhone(v);
+const idErr=()=>S.am==='email'?t('errEmail'):t('errPhone');
+
+function doLogin(){
+  const id=$('#id').value.trim(),pw=$('#pw').value;
+  if(!id||!pw){S.err=t('errFill');return render()}
+  if(!validId(id)){S.err=idErr();return render()}
+  if(pw.length<6){S.err=t('errPw');return render()}
+  S.user={id,email:S.am==='email'?id:'',phone:S.am==='phone'?id:'',name:'',bio:'',photo:null};
+  afterAuth();
+}
+function doSignup(){
+  const nm=$('#nm').value.trim(),id=$('#id').value.trim(),pw=$('#pw').value,pw2=$('#pw2').value;
+  if(!nm||!id||!pw||!pw2){S.err=t('errFill');return render()}
+  if(!validId(id)){S.err=idErr();return render()}
+  if(pw.length<6){S.err=t('errPw');return render()}
+  if(pw!==pw2){S.err=t('errMatch');return render()}
+  S.user={id,email:S.am==='email'?id:'',phone:S.am==='phone'?id:'',name:nm,bio:'',photo:null};
+  afterAuth();
+}
+function social(p){
+  // Démonstration : la vraie connexion Google/Apple demande un serveur et un enregistrement OAuth.
+  S.user={id:p+'-demo',email:'',phone:'',name:p==='google'?'Compte Google':'Compte Apple',bio:'',photo:null,provider:p};
+  afterAuth();
+}
+function afterAuth(){S.err='';save();go('home')}
+function doForgot(){
+  const id=$('#id').value.trim();
+  if(!validId(id)){S.err=idErr();S.msg='';return render()}
+  S.err='';S.msg=t('resetOk');render();
+}
+function logout(){S.user=null;save();go('login')}
+
+// ---------- ACCUEIL ----------
+const rcard=r=>`<div class="card rh" style="cursor:pointer" onclick="go('track')"><div><b>${r.id}</b><p class="muted">${cn(r.c)} · ${esc(r.note)}</p></div>${pillOf(r)}</div>`;
+function home(){
+  const open=reports.filter(r=>r.s<2&&!r.draft).length,done=reports.filter(r=>r.s===2).length;
+  const name=S.user?.name?` ${esc(S.user.name)}`:'';
+  return `<h2>${t('greet')}${name}</h2>${S.user?.bio?`<p class="muted" style="margin-bottom:10px">${esc(S.user.bio)}</p>`:`<p style="color:var(--title);font-weight:600;font-size:14px;margin-bottom:10px">${t('slogan')}</p>`}
+  <button class="banner" onclick="go('urgent')">${ic('emergency','36')}<div><b>${t('emgBanner')}</b><small>${t('emgSub')}</small></div></button>
+  <button class="btn" onclick="startReport()">${ic('add_a_photo')} ${t('report')}</button>
+  <div class="stats" style="margin-top:12px">
+    <div class="card"><b>${reports.length}</b><span>${t('track')}</span></div>
+    <div class="card"><b>${open}</b><span>${STATUS[S.lang][1]}</span></div>
+    <div class="card"><b>${done}</b><span>${STATUS[S.lang][2]}</span></div></div>
+  <p class="sect">${t('cats')}</p>
+  <div class="grid">${CATS.map(c=>`<button class="tile" onclick="startReport('${c.id}')"><span class="ic">${ic(c.i)}</span><b>${lab(c)}</b></button>`).join('')}</div>
+  <p class="sect">${t('track')}</p>${reports.slice(0,2).map(rcard).join('')||`<p class="muted">${t('empty')}</p>`}
+  `;
+}
+
+// ---------- URGENCES ----------
+function urgent(){
+  return `<h2>${t('urgTitle')}</h2><p class="muted" style="margin-bottom:12px">${t('urgText')}</p>
+  <div class="emg-list">${EMG.map(e=>`<button class="emg" onclick="callEmg('${e.n}')"><span class="ic">${ic(e.i)}</span><p>${lab(e)}</p><span class="num">${e.n}</span></button>`).join('')}</div>
+  <button class="btn urg" onclick="callEmg('15')">${ic('call')} ${t('call')} 15</button>
+  <div class="row2" style="grid-template-columns:1fr 1fr">
+    <button class="btn sec" onclick="callEmg('19')">${ic('local_police','20')} 19</button>
+    <button class="btn sec" onclick="callEmg('177')">${ic('shield_person','20')} 177</button></div>
+  <p class="muted center" style="margin-top:12px">${t('callNote')}</p>`;
+}
+function callEmg(num){
+  const dial=()=>{toast(`${t('sentToast')} ${num}`);location.href='tel:'+num};
+  if(!navigator.geolocation)return dial();
+  navigator.geolocation.getCurrentPosition(p=>{S.d.lat=p.coords.latitude;S.d.lng=p.coords.longitude;dial()},dial,{enableHighAccuracy:true,timeout:4000});
+}
+
+// ---------- SIGNALEMENT ----------
+function startReport(c){S.d=blank();S.d.cat=c||null;S.step=c?1:0;go('report')}
+function reportWiz(){
+  if(S.step===1&&S.d.geo==='idle')setTimeout(fixPosition,0);
+  if(S.step===4){const r=S.last;return `<div class="card center"><div class="ok-ico">${ic('check','36')}</div>
+    <h2>${r.draft?t('draftSaved'):t('sent')}</h2><p class="muted">${r.draft?t('draftText'):t('sentText')}</p>
+    <p class="label" style="margin-top:12px">${t('trackNo')}</p><p class="num2">${r.id}</p>${r.draft?pillOf(r):trackOf(0)}</div>
+    <button class="btn" onclick="go('track')">${t('followUp')}</button>
+    <button class="btn sec" onclick="go('home')">${t('homeBtn')}</button>`}
+  const d=S.d,steps=[t('pickCat'),t('loc'),t('photo'),t('review')];
+  const can=S.step===0?!!d.cat:S.step===1?d.lat!=null:true;
+  let body='';
+  if(S.step===0) body=`<div class="grid">${CATS.map(c=>`<button class="tile ${d.cat===c.id?'on':''}" onclick="pickCat('${c.id}')"><span class="ic">${ic(c.i)}</span><b>${lab(c)}</b></button>`).join('')}</div>`;
+  else if(S.step===1) body=`<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">${ic(d.geo==='ok'?'gps_fixed':d.geo==='error'?'gps_off':'gps_not_fixed','22')} <b>${gpsMsg(d)}</b></div>
+    <div class="map"><div><div class="coords">${coordsTxt(d)}</div>${d.acc!=null?`<p class="muted">${t('precision')} ±${d.acc} m</p>`:''}<br>
+      ${d.lat!=null?`<a class="link" href="https://www.google.com/maps?q=${d.lat},${d.lng}" target="_blank" rel="noopener">${ic('map','18')} ${t('maps')}</a>`:''}</div></div>
+    <button class="btn sec" onclick="fixPosition()">${ic('my_location')} ${d.lat!=null?t('gpsRefresh'):t('gpsRetry')}</button>
+    <div class="nudge"><span></span><button onclick="nudge(0,1)">${ic('north')}</button><span></span>
+      <button onclick="nudge(-1,0)">${ic('west')}</button><span></span><button onclick="nudge(1,0)">${ic('east')}</button>
+      <span></span><button onclick="nudge(0,-1)">${ic('south')}</button><span></span></div>
+    <p class="muted center" style="margin-top:6px">${t('nudge')}</p>`;
+  else if(S.step===2) body=`<label class="photo">${d.photo?`<img src="${d.photo}" alt="">`:`<span>${ic('photo_camera','40')}<br>${t('photoTip')}</span>`}
+    <input type="file" accept="image/*" capture="environment" hidden onchange="pickPhoto(this)"></label>`;
+  else body=`<label class="field">${t('desc')}<textarea rows="3" oninput="S.d.note=this.value">${esc(d.note)}</textarea></label>
+    <ul style="list-style:none;display:grid;gap:8px;font-size:14px">
+      <li>${ic('category','18')} ${cn(d.cat)}</li>
+      <li>${ic('location_on','18')} <span class="coords">${coordsTxt(d)}</span>${d.acc!=null?` · ±${d.acc} m`:''}</li>
+      <li>${ic('photo_camera','18')} ${d.photo?'✓':'—'}</li></ul>
+    ${navigator.onLine?'':`<p class="err">${t('draftText')}</p>`}`;
+  const btns=S.step===0?'':`<div class="row2"><button class="btn sec" onclick="back()">${t('back')}</button>
+    <button class="btn" ${can?'':'disabled'} onclick="next()">${S.step===3?t('reportNow'):t('next')}</button></div>`;
+  return `<div class="rh" style="margin-bottom:10px"><button class="link" onclick="go('home')">✕ ${t('cancel')}</button><span class="label">${t('step')} ${S.step+1}/4</span></div>
+   <h2>${t('reportTitle')}</h2>
+   <div class="prog">${steps.map((_,i)=>`<i class="${i<=S.step?'on':''}"></i>`).join('')}</div>
+   <div class="card"><p class="label" style="margin-bottom:8px">${steps[S.step]}</p>${body}</div>${btns}`;
+}
+function next(){if(S.step===1&&S.d.lat==null)return toast(t('gpsNeedFix'));if(S.step===3)return submit();S.step++;render();window.scrollTo(0,0)}
+function back(){if(S.step>0){S.step--;render()}else go('home')}
+function coordsTxt(d){return d.lat==null?'—':d.lat.toFixed(5)+', '+d.lng.toFixed(5)}
+function gpsMsg(d){
+  if(d.geo==='ok')return t('gpsOk');
+  if(d.geo==='error')return {denied:t('gpsDenied'),timeout:t('gpsTimeout'),unavail:t('gpsUnavail'),unsupported:t('gpsUnsupported')}[d.geoErr]||t('gpsUnavail');
+  return t('gpsSearch');
+}
+function pickCat(c){S.d.cat=c;S.step=1;render()}
+// Demande la position GPS réelle de l'appareil : précision haute, sans cache
+function fixPosition(){
+  if(!navigator.geolocation){S.d.geo='error';S.d.geoErr='unsupported';return render()}
+  S.d.geo='loading';render();
+  navigator.geolocation.getCurrentPosition(p=>{
+    S.d.lat=p.coords.latitude;S.d.lng=p.coords.longitude;S.d.acc=Math.round(p.coords.accuracy);
+    S.d.geo='ok';S.d.geoErr='';render();toast(t('gpsOk'));
+  },e=>{
+    S.d.geo='error';
+    S.d.geoErr=e.code===1?'denied':e.code===2?'unavail':'timeout';
+    render();
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+function locate(){fixPosition()}
+function pickPhoto(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.d.photo=r.result;render()};r.readAsDataURL(f)}
+function submit(){
+  const d=S.d,online=navigator.onLine;
+  const r={id:'BLG-'+(10000+Math.floor(Math.random()*89999)),c:d.cat,note:(d.note||'').trim(),lat:d.lat,lng:d.lng,acc:d.acc,date:new Date().toISOString().slice(0,10),s:0,draft:!online};
+  reports.unshift(r);S.last=r;S.step=4;render();
+  toast(online?t('sent'):t('draftSaved'));
+}
+window.addEventListener('online',()=>{reports.forEach(r=>{if(r.draft){r.draft=false;r.s=0}});render()});
+
+// ---------- SUIVI & QUARTIER ----------
+function trackV(){return `<h2>${t('trackTitle')}</h2><p class="muted" style="margin-bottom:12px">${t('trackText')}</p>
+ ${reports.map(r=>`<div class="card"><div class="rh"><b>${r.id}</b>${pillOf(r)}</div>
+  <p class="muted" style="margin:4px 0">${cn(r.c)} · ${esc(r.note)}</p>
+  ${r.draft?'':trackOf(r.s)}
+  ${!r.draft&&r.s<2?`<button class="btn sec" onclick="advance('${r.id}')">${t('simulate')}</button>`:''}</div>`).join('')||`<p class="muted">${t('empty')}</p>`}`}
+function advance(id){const r=reports.find(x=>x.id===id);if(r&&r.s<2){r.s++;render();toast(`🔔 ${id}: ${STATUS[S.lang][r.s]}`)}}
+function quarterV(){
+  const f=S.filter,list=NEARBY.filter(i=>f==='tous'||i.c===f);
+  return `<h2>${t('quarterTitle')}</h2><p class="muted" style="margin-bottom:12px">${t('quarterText')}</p>
+  <div class="chips">
+   <button class="chip ${f==='tous'?'on':''}" onclick="S.filter='tous';render()">${t('all')}</button>
+   ${CATS.map(c=>`<button class="chip ${f===c.id?'on':''}" onclick="S.filter='${c.id}';render()">${lab(c)}</button>`).join('')}</div>
+  <div class="emg-list">${list.map(i=>`<div class="card rh"><div><b>${cn(i.c)}</b><p class="muted">${lab(i.n)}</p></div><span class="pill s${i.s}">${STATUS[S.lang][i.s]}</span></div>`).join('')}</div>`;
+}
+
+// ---------- PROFIL ----------
+// 1er clic sur la photo : ouvre le profil. 2e clic (profil déjà ouvert) : retour à l'écran précédent.
+function toggleProfile(){
+  if(S.screen==='profile'){
+    applyTheme();
+    go(S.prev||'home');
+  }else{
+    S.prev=S.screen;
+    S.pd={...S.user};
+    S.pdTheme=S.theme;
+    go('profile');
+  }
+}
+function pickAvatar(i){
+  const f=i.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{S.pd.photo=r.result;render()};
+  r.readAsDataURL(f);
+}
+function previewTheme(th){S.pdTheme=th;applyTheme(th);render()}
+function saveProfile(){
+  S.user={...S.user,name:(S.pd.name||'').trim(),bio:(S.pd.bio||'').slice(0,160),photo:S.pd.photo||null};
+  S.theme=S.pdTheme;applyTheme();save();
+  toast(t('saved'));go(S.prev||'home');
+}
+function cancelProfile(){applyTheme();go(S.prev||'home')}
+function profileV(){
+  const p=S.pd||{...S.user};
+  const themes=[['light','light_mode',t('themeLight')],['dark','dark_mode',t('themeDark')],['auto','brightness_auto',t('themeAuto')]];
+  return `<h2>${t('editProfile')}</h2>
+  <div class="card center">
+    <div class="avatar lg">${avatar(p)}</div>
+    <label class="link" style="margin-top:10px">${ic('photo_camera','18')} ${t('changePhoto')}<input type="file" accept="image/*" hidden onchange="pickAvatar(this)"></label>
+  </div>
+  <div class="card">
+    <label class="field">${t('name')}<input value="${esc(p.name)}" oninput="S.pd.name=this.value"></label>
+    <label class="field">${t('email')} / ${t('phone')}<input value="${esc(p.email||p.phone||'')}" disabled></label>
+    <label class="field">${t('bio')}<textarea rows="3" maxlength="160" placeholder="${t('bioPh')}" oninput="S.pd.bio=this.value">${esc(p.bio)}</textarea></label>
+  </div>
+  <div class="card">
+    <p class="label" style="margin-bottom:8px">${t('theme')}</p>
+    <div class="seg three">${themes.map(([k,i,l])=>`<button class="${S.pdTheme===k?'on':''}" onclick="previewTheme('${k}')">${ic(i,'18')} ${l}</button>`).join('')}</div>
+  </div>
+  <button class="btn" onclick="saveProfile()">${ic('save')} ${t('save')}</button>
+  <button class="btn sec" onclick="cancelProfile()">${t('cancelBtn')}</button>
+  <button class="btn sec" style="border-color:var(--red);color:var(--red);margin-top:24px" onclick="logout()">${ic('logout')} ${t('logout')}</button>`;
+}
+
+load();
+applyTheme();
+S.screen=S.user?'home':'login';
+document.documentElement.lang=S.lang;
+document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
+render();
+</script>
+</body>
+</html>
